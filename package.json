@@ -1,0 +1,37 @@
+{
+  "name": "subtitle-app",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start-web": "webpack --progress --colors --watch",
+    "rn-start": "tsc --watch",
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "release-android": "cd android && gradlew assembleRelease"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.12",
+    "@types/pako": "1.0.0",
+    "@types/sax": "^1.0.0",
+    "@types/webpack": "^2.2.14",
+    "awesome-typescript-loader": "3.1.2",
+    "source-map-loader": "^0.1.6",
+    "ts-node": "^3.0.2",
+    "typescript": "2.2.2",
+    "webpack": "2.2.1"
+  },
+  "dependencies": {
+    "buffer": "^5.0.6",
+    "pako": "^1.0.5",
+    "react": "^15.4.1",
+    "react-addons-perf": "^15.4.1",
+    "react-addons-test-utils": "^15.4.1",
+    "react-dom": "^15.4.1",
+    "react-native": "^0.42.0",
+    "react-native-windows": "^0.33.0",
+    "reactxp": "^0.42.0-rc.6",
+    "reactxp-video": "^0.1.2",
+    "sax": "^1.2.2",
+    "stream": "^0.0.2"
+  }
+}
