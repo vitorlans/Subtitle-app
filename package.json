@@ -31,6 +31,8 @@
     "react-native-windows": "^0.33.0",
     "reactxp": "^0.42.0-rc.6",
     "reactxp-video": "^0.1.2",
+    "reactxp-virtuallistview": "^0.1.0",
+    "resub": "^0.0.14",
     "sax": "^1.2.2",
     "stream": "^0.0.2"
   }

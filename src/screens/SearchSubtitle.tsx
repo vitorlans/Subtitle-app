@@ -1,11 +1,11 @@
 import * as RX from 'reactxp'
 const { View, Component, Text, TextInput, ScrollView, Picker, Alert, WebView } = RX;
+import { ComponentBase } from 'resub'
 
 import Button from '../components/Button';
-import OS from '../utils/OpenSubtitles';
-import { Buffer } from 'buffer';
-import * as pako  from 'pako'
 
+
+import OpenSubtitlesStore = require('../stores/OpenSubtitlesStore')
 
 const _styles = {
     headerText:RX.Styles.createTextStyle({
@@ -61,57 +61,33 @@ const _styles = {
 
 }
 
-interface DogAgeState {
+interface SearchSubtitleState {
     size?: string,
     age?: string,
-    name?:string 
+    name?:string, 
+    logIn?: any
+    searchSubtitles?: any,
+    getToken?: string,
+    downloadSubtitles?: any
+
 }
 
 
-export default class SearchSubtitle extends Component<null, DogAgeState> {
+export default class SearchSubtitle extends ComponentBase<null, SearchSubtitleState> {
 
-    constructor() {
-        super();
-
-        this.state = {
-            size: "1",
-            age: "",
-            name: ""
-        }
+    protected _buildState(props: {}, initialBuild: boolean): SearchSubtitleState {
+            return {
+                getToken: OpenSubtitlesStore.getToken(),
+                name: ""
+            }
     }
-    componentDidMount() {
-
-       let opensubtitles = new OS();
-        opensubtitles.LogIn("", "", "en", "OSTestUserAgentTemp")
-            .then((res: any) => {
-                console.log(res.token);
-                opensubtitles.SearchSubtitles(res.token, [{
-                    query: 'breaking bad',
-                    sublanguageid: 'por',
-                    episode: 1,
-                    season: 1,
-                    limit: 10
-                }]).then((res2 : any) => {
-                     console.log(res2);
-                    opensubtitles.DownloadSubtitles(res.token, [res2.data[0].IDSubtitleFile]).then((res3 : any) => {
-                        console.log(res3);
-                        let gzipData = Buffer.from(res3.data[0].data, 'base64')
-
-                        var k = pako.ungzip(gzipData)
-
-                        let str:string = String.fromCharCode.apply(null, k);
-                        this.setState({
-                            name: str
-                        })
-                        console.log(str)
-                    })
-                })
-            })
-            .catch(err => {
-                console.log(err);
-            });
-       
-    }
+    
+    protected _componentDidRender()
+    {
+        if(!this.state.getToken)
+            OpenSubtitlesStore.logIn()
+    }    
+    
 
     render(): JSX.Element | null {
 
@@ -123,12 +99,10 @@ export default class SearchSubtitle extends Component<null, DogAgeState> {
                 <Text style={_styles.headerInfo}>Calculate your pet age in human years</Text>
             </View>
             <View style={_styles.content}>
-                <WebView
-                    url="https://www.youtube.com/embed/BceLxxx1c-s" javaScriptEnabled={true}  style={RX.Styles.createViewStyle({height:315, width:420})}  />
                 <Text style={_styles.label}>{this.state.name}</Text>
 
 
-                <Button text="Check" onPress={this._buttonPress} backgroundColor="#000"></Button>
+                <Button text="Check" onPress={this._buttonPress} backgroundColor="grey"></Button>
             </View>
         </ScrollView>
       );
@@ -142,7 +116,7 @@ export default class SearchSubtitle extends Component<null, DogAgeState> {
     }
 
     private _buttonPress = () => {
-        Alert.show("TESTE", "TESTE", [{text: "OK"}, {text:"Cancelar"}])
+        console.log(this.state.getToken)
     }
 
     private _pickerChange = (itemValue: string, itemPosition: number) => {
