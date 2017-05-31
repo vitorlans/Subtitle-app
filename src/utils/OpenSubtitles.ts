@@ -32,7 +32,7 @@ export default class OS {
     LogOut(token: any) {
         return this.call('LogOut', arguments)
     }
-    SearchSubtitles(token: any, array_queries: any) {
+    SearchSubtitles(token: any, array_queries: any, limit: any) {
         return this.call('SearchSubtitles', arguments)
     }
     SearchToMail(token: any, array_langs:any, array_movies:any) {
